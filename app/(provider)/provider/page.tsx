@@ -1,12 +1,20 @@
 import React from 'react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/auth';
 
 import AppHeader from '@/components/common/app-header';
 import { Separator } from '@/components/ui/separator';
 import { ProviderServiceCard } from '@/components/provider/provider-service-card';
 import { ServiceUpload } from '@/components/provider/service-upload';
-import { formatBalance } from '@/lib/utils';
+import Balance from '@/components/common/balance';
 
 async function UserApp() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return null;
+  }
+
   return (
     <>
       <AppHeader />
@@ -21,9 +29,7 @@ async function UserApp() {
               <ServiceUpload saveType='Adicionar' />
             </div>
             <div className='flex items-center p-6 justify-end'>
-              <h3 className='text-xl font-semibold'>
-                {formatBalance(4556.41)}
-              </h3>
+              <Balance session={session} />
             </div>
 
             <div className='h-full px-4 py-6 lg:px-8'>
