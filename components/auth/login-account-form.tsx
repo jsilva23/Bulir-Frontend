@@ -1,7 +1,8 @@
-'use client'
+'use client';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { signIn } from 'next-auth/react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -36,10 +37,31 @@ const LoginAccountForm = () => {
     },
   });
 
+  async function onSubmit({ email, password }: z.infer<typeof formSchema>) {
+    try {
+      const response = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (response?.ok) {
+    
+      } else {
+        console.error('Falha na autenticação');
+      }
+    } catch (error) {
+      console.error('Ocorreu um erro ao processar a solicitação:', error);
+    }
+  }
+
   return (
     <div className='w-full flex flex-col justify-center items-center space-y-4'>
       <Form {...form}>
-        <form className='w-full flex flex-col space-y-2'>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='w-full flex flex-col space-y-2'
+        >
           <FormField
             control={form.control}
             name='email'
