@@ -6,7 +6,7 @@ type SignUpDataType = {
   email: string;
   nif: string;
   password: string;
-  role: Role;
+  role: 'Client' | 'Provider';
 };
 
 export const signUpUser = async (data: SignUpDataType) => {

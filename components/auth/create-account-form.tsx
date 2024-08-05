@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Role } from '@/lib/utils';
+import { signUpUser } from '@/app/api/auth/register';
 
 const formSchema = z.object({
   fullName: z.string({
@@ -53,10 +54,25 @@ const CreateAccountForm = () => {
     },
   });
 
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const response = await signUpUser(values);
+
+      if (response?.status === 201) {
+        form.reset();
+      }
+    } catch (error) {
+      console.log('Signup form: ', error);
+    }
+  };
+
   return (
     <div className='w-full flex flex-col justify-center items-center space-y-2'>
       <Form {...form}>
-        <form className='w-full flex flex-col space-y-4'>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='w-full flex flex-col space-y-4'
+        >
           <FormField
             control={form.control}
             name='fullName'
