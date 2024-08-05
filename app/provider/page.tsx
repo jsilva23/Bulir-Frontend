@@ -21,7 +21,9 @@ async function UserApp() {
               <ServiceUpload saveType='Adicionar' />
             </div>
             <div className='flex items-center p-6 justify-end'>
-              <h3 className='text-xl font-semibold'>{formatBalance(4556.41)}</h3>
+              <h3 className='text-xl font-semibold'>
+                {formatBalance(4556.41)}
+              </h3>
             </div>
 
             <div className='h-full px-4 py-6 lg:px-8'>

@@ -15,14 +15,10 @@ export function ProviderServiceCard() {
     <Card>
       <CardHeader>
         <CardTitle>Service title</CardTitle>
-        <CardDescription>
-          Description
-        </CardDescription>
+        <CardDescription>Description</CardDescription>
       </CardHeader>
       <CardContent>
-        <p className='text-sm'>
-          Preço: {formatBalance(1437.239)}
-        </p>
+        <p className='text-sm'>Preço: {formatBalance(1437.239)}</p>
       </CardContent>
       <CardFooter className='flex justify-between gap-5'>
         <ServiceUpload saveType='Editar' />
