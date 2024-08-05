@@ -14,3 +14,8 @@ export function formatBalance(balance: number = 0): string {
       maximumFractionDigits: 2,
     });
 }
+
+export enum Role {
+  Client = 'Client',
+  Provider = 'Provider',
+}
