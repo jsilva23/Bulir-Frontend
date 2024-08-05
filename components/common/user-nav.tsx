@@ -1,3 +1,5 @@
+'use client';
+import { signOut, useSession } from 'next-auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,8 +10,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useRouter } from 'next/navigation';
 
 export function UserNav() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  async function logout() {
+    await signOut({
+      redirect: false,
+    });
+    router.refresh();
+  }
+
   return (
     <>
       <DropdownMenu>
@@ -26,7 +39,7 @@ export function UserNav() {
             <div className='flex flex-col space-y-2'>
               <p className='text-sm font-medium leading-none'>John Doe</p>
               <p className='text-xs leading-none text-muted-foreground'>
-                john@email.com
+                {session?.user?.email}
               </p>
               <p className='text-xs leading-none text-muted-foreground'>
                 NIF: 3748354234
@@ -35,7 +48,9 @@ export function UserNav() {
           </DropdownMenuLabel>
 
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Terminar sessão</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => logout()}>
+            Terminar sessão
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

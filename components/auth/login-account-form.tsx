@@ -14,6 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   email: z
@@ -29,6 +30,7 @@ const formSchema = z.object({
 });
 
 const LoginAccountForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,7 +48,7 @@ const LoginAccountForm = () => {
       });
 
       if (response?.ok) {
-    
+        router.refresh();
       } else {
         console.error('Falha na autenticação');
       }
