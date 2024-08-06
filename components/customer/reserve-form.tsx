@@ -25,6 +25,7 @@ import {
 import { ServiceType } from '@/types/service';
 import { Session } from 'next-auth';
 import { createReservation } from '@/app/api/services/customer-services';
+import { useFetch } from '@/hooks/useFetch';
 
 type ServiceFormType = {
   service: ServiceType;
@@ -49,10 +50,16 @@ export function ReserveForm({
     resolver: zodResolver(FormSchema),
   });
 
+  const { mutate: balanceMutate } = useFetch<{ balance: number }>(
+    'users/balance',
+    session
+  );
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       await createReservation(service.id, data, session);
       mutate();
+      balanceMutate();
       close(false);
     } catch (erro) {
       console.error('Erro no exemplo de uso:', erro);
