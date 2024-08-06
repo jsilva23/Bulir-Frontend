@@ -1,7 +1,15 @@
 import api from '@/lib/services';
 import { Session } from 'next-auth';
 
-export const createReservation = async (serviceId: string, session: Session) => {
+interface ReserveType {
+  date: Date;
+}
+
+export const createReservation = async (
+  serviceId: string,
+  data: ReserveType,
+  session: Session
+) => {
   const authToken = session?.access_token;
   const url = `reservations/${serviceId}`;
   try {
@@ -12,7 +20,7 @@ export const createReservation = async (serviceId: string, session: Session) => 
       },
     };
 
-    const response = await api.post(url, config);
+    const response = await api.post(url, data, config);
 
     return response.data;
   } catch (error) {

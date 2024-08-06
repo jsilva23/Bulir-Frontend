@@ -8,10 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '../ui/button';
 import { formatBalance } from '@/lib/utils';
 import { ServiceType } from '@/types/service';
-import { createReservation } from '@/app/api/services/customer-services';
+import { ReserveUpload } from './reserve-upload';
 
 type ServiceCardType = {
   service: ServiceType;
@@ -20,15 +19,6 @@ type ServiceCardType = {
 };
 
 export function ServiceCard({ service, session, mutate }: ServiceCardType) {
-  const handleCreateReservation = async (serviceId: string) => {
-    try {
-      await createReservation(serviceId, session);
-      mutate();
-    } catch (erro) {
-      console.error('Erro no exemplo de uso:', erro);
-    }
-  };
-
   return (
     <Card>
       <CardHeader>
@@ -40,9 +30,7 @@ export function ServiceCard({ service, session, mutate }: ServiceCardType) {
         <p className='text-sm'>Provedor: {service.provider.fullName}</p>
       </CardContent>
       <CardFooter className='flex justify-between gap-5'>
-        <Button onClick={() => handleCreateReservation(service.id)}>
-          Reservar
-        </Button>
+        <ReserveUpload session={session} service={service} mutate={mutate} />
       </CardFooter>
     </Card>
   );
