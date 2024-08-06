@@ -22,7 +22,7 @@ type ServiceCardType = {
 export function ServiceCard({ service, session, mutate }: ServiceCardType) {
   const handleCreateReservation = async (serviceId: string) => {
     try {
-      await createReservation('intend-areas', session);
+      await createReservation(serviceId, session);
       mutate();
     } catch (erro) {
       console.error('Erro no exemplo de uso:', erro);
