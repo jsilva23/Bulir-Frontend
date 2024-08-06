@@ -11,11 +11,14 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const res = await fetch('http://localhost:3000/auth/login', {
-          method: 'POST',
-          body: JSON.stringify(credentials),
-          headers: { 'Content-Type': 'application/json' },
-        });
+        const res = await fetch(
+          'https://bulir-backend.onrender.com/auth/login',
+          {
+            method: 'POST',
+            body: JSON.stringify(credentials),
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
         const user = await res.json();
 
         if (res.ok && user) {
