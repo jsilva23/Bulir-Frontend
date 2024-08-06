@@ -22,13 +22,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { ServiceType } from '@/types/service';
+import { ReservationType, ServiceType } from '@/types/service';
 import { Session } from 'next-auth';
-import { createReservation } from '@/app/api/services/customer-services';
+import { createReservation, editReservation } from '@/app/api/services/customer-services';
 import { useFetch } from '@/hooks/useFetch';
 
 type ServiceFormType = {
-  service: ServiceType;
+  service?: ServiceType;
+  reservation?: ReservationType;
   session: Session;
   mutate: () => void;
   close: React.Dispatch<React.SetStateAction<boolean>>;
@@ -43,11 +44,15 @@ const FormSchema = z.object({
 export function ReserveForm({
   session,
   service,
+  reservation,
   mutate,
   close,
 }: ServiceFormType) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      date: reservation ? reservation.date : undefined,
+    },
   });
 
   const { mutate: balanceMutate } = useFetch<{ balance: number }>(
@@ -57,12 +62,14 @@ export function ReserveForm({
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      await createReservation(service.id, data, session);
+      if (service) await createReservation(service.id, data, session);
+      if (reservation) await editReservation(reservation.id, data, session);
       mutate();
       balanceMutate();
       close(false);
-    } catch (erro) {
-      console.error('Erro no exemplo de uso:', erro);
+    } catch (erro: any) {
+      console.error('Erro no exemplo de uso:', erro.response.data.message);
+      alert(erro.response.data.message);
     }
   }
 

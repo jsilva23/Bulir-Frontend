@@ -30,7 +30,12 @@ export function ServiceCard({ service, session, mutate }: ServiceCardType) {
         <p className='text-sm'>Provedor: {service.provider.fullName}</p>
       </CardContent>
       <CardFooter className='flex justify-between gap-5'>
-        <ReserveUpload session={session} service={service} mutate={mutate} />
+        <ReserveUpload
+          saveType='Reservar'
+          session={session}
+          service={service}
+          mutate={mutate}
+        />
       </CardFooter>
     </Card>
   );

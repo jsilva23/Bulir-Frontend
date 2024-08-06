@@ -7,6 +7,7 @@ import { useFetch } from '@/hooks/useFetch';
 import { Separator } from '@/components/ui/separator';
 import { ServiceCard } from '@/components/customer/service-card';
 import { ServiceType } from '@/types/service';
+import Link from 'next/link';
 
 export function AllServicesGrid({ session }: { session: Session }) {
   const { data, isLoading, mutate } = useFetch<ServiceType[]>(
@@ -22,6 +23,9 @@ export function AllServicesGrid({ session }: { session: Session }) {
             Todos Serviços
           </h2>
         </div>
+        <Link className='text-blue-800' href={'customer/reservas'}>
+          Minhas reservas
+        </Link>
       </div>
       <Separator className='my-4' />
 

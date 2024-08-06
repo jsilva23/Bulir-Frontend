@@ -8,3 +8,10 @@ export interface ServiceType {
     fullName: string;
   };
 }
+
+export interface ReservationType {
+  date: Date;
+  id: string;
+  canceled: boolean;
+  service: ServiceType;
+}
