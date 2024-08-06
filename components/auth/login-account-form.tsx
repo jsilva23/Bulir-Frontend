@@ -17,13 +17,9 @@ import {
 import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
-  email: z
-    .string({
-      required_error: 'O e-mail é obrigatório',
-    })
-    .email({
-      message: 'Deve ser um e-mail válido',
-    }),
+  identifier: z.string({
+    required_error: 'O e-mail é obrigatório',
+  }),
   password: z.string({
     required_error: 'A senha é obrigatório',
   }),
@@ -34,15 +30,18 @@ const LoginAccountForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      identifier: '',
       password: '',
     },
   });
 
-  async function onSubmit({ email, password }: z.infer<typeof formSchema>) {
+  async function onSubmit({
+    identifier,
+    password,
+  }: z.infer<typeof formSchema>) {
     try {
       const response = await signIn('credentials', {
-        email,
+        identifier,
         password,
         redirect: false,
       });
@@ -66,12 +65,12 @@ const LoginAccountForm = () => {
         >
           <FormField
             control={form.control}
-            name='email'
+            name='identifier'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>E-mail</FormLabel>
+                <FormLabel>E-mail ou NIF</FormLabel>
                 <FormControl>
-                  <Input placeholder='E-mail' {...field} />
+                  <Input placeholder='E-mail ou NIF' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
